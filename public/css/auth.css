@@ -4,12 +4,42 @@
 * {
     box-sizing: border-box;
 }
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+}
 
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.timer-count {
+    font-weight: bold;
+    font-size: 16px;
+    color: #d9534f;
+}
+
+/* Style khi nút bị disabled */
+button:disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+}
 .auth-container {
     display: flex;
     min-height: 100vh;
     width: 100%;
-    font-family: 'Google Sans Flex', sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     overflow: hidden;
     background: #fff;
 }
@@ -48,7 +78,8 @@
 }
 
 @keyframes floatImage {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0);
     }
     50% {
@@ -66,7 +97,7 @@
     padding: 0 8%;
     position: relative;
     z-index: 2;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.02);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.02);
 }
 
 .auth-wrapper {

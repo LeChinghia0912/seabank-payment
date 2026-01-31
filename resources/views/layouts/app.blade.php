@@ -8,6 +8,35 @@
     <title>Document</title>
 </head>
 <body>
+    @include('partials.header')
     @yield('content')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: "{{ session('error') }}",
+            });
+        @endif
+
+        @if(session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cảnh báo!',
+                text: "{{ session('warning') }}",
+            });
+        @endif
+    </script>
 </body>
 </html>

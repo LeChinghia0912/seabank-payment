@@ -9,40 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-
-    <style>
-        .alert {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-        }
-
-        .timer-count {
-            font-weight: bold;
-            font-size: 16px;
-            color: #d9534f;
-        }
-
-        /* Style khi nút bị disabled */
-        button:disabled {
-            background-color: #ccc !important;
-            cursor: not-allowed;
-        }
-    </style>
 </head>
 
 <body>
@@ -56,8 +22,8 @@
 
         <div class="auth-right">
             <div class="auth-wrapper">
-                <h1 class="auth-title">Chào mừng đến với Kuchen! 👋</h1>
-                <p class="auth-subtitle">Vui lòng đăng nhập để theo dõi và quản lý đi đơn và bảo hành </p>
+                <h1 class="auth-title">Xin chào</h1>
+                <p class="auth-subtitle">Vui lòng đăng nhập</p>
 
                 @if(session('warning'))
                 <div class="alert alert-warning">
@@ -65,11 +31,7 @@
                 </div>
                 @endif
 
-                @if($errors->has('message'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('message') }}
-                </div>
-                @endif
+                {{-- Alert 'message' đã được xử lý bởi SweetAlert ở layout --}}
 
                 @if($errors->has('locked'))
                 <div class="alert alert-danger" id="lock-msg">
@@ -78,13 +40,16 @@
                 </div>
                 @endif
 
-                <form action="{{ route('auth.login') }}" method="POST" id="loginForm">
+                <form action="{{ route('auth.handleLogin') }}" method="POST" id="loginForm">
                     @csrf
 
                     <div class="auth-form-group">
                         <label class="auth-label">Tên tài khoản</label>
                         <div class="auth-input-wrapper">
-                            <input type="text" name="username" class="auth-input" placeholder="Nhập tên tài khoản" required autofocus value="{{ old('username') }}">
+                            <input type="text" name="username" class="auth-input @error('username') is-invalid @enderror" placeholder="Nhập tên tài khoản" required autofocus value="{{ old('username') }}">
+                            @error('username')
+                                <span class="text-danger" style="color: #dc2626; font-size: 13px; margin-top: 5px; display: block;">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -92,7 +57,7 @@
                         <label class="auth-label">Mật khẩu</label>
                         <div class="auth-input-wrapper" style="position: relative;">
                             {{-- Thêm ID password để JS tìm chính xác --}}
-                            <input type="password" name="password" class="auth-input" placeholder="Nhập mật khẩu" required id="password">
+                            <input type="password" name="password" class="auth-input @error('password') is-invalid @enderror" placeholder="Nhập mật khẩu" required id="password">
                             
                             {{-- Nút icon con mắt --}}
                             <span id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #64748b;">
@@ -169,6 +134,25 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
 
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: "{{ session('error') }}",
+            });
+        @endif
+    </script>
+</body>
 </html>

@@ -20,7 +20,7 @@
         <div class="auth-right">
             <div class="auth-wrapper">
                 <h1 class="auth-title">Tạo tài khoản mới 🚀</h1>
-                <p class="auth-subtitle">Điền thông tin bên dưới để tham gia cùng Kuchen</p>
+                <p class="auth-subtitle">Điền thông tin bên dưới để đăng ký tài khoản</p>
 
                 <form action="{{ route('auth.handleRegister') }}" method="POST">
                     @csrf
@@ -28,7 +28,10 @@
                     <div class="auth-form-group">
                         <label class="auth-label">Họ và tên</label>
                         <div class="auth-input-wrapper">
-                            <input type="text" name="full_name" class="auth-input" placeholder="Ví dụ: Nguyễn Văn A" required autofocus>
+                            <input type="text" name="full_name" class="auth-input @error('full_name') is-invalid @enderror" placeholder="Ví dụ: Nguyễn Văn A" required autofocus value="{{ old('full_name') }}">
+                            @error('full_name')
+                                <span class="text-danger" style="color: #dc2626; font-size: 13px; margin-top: 5px; display: block;">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     
@@ -37,37 +40,49 @@
                     <div class="auth-form-group">
                         <label class="auth-label">Tên tài khoản</label>
                         <div class="auth-input-wrapper">
-                            <input type="text" name="username" class="auth-input" placeholder="Nhập tên tài khoản" required>
+                            <input type="text" name="username" class="auth-input @error('username') is-invalid @enderror" placeholder="Nhập tên tài khoản" required value="{{ old('username') }}">
+                            @error('username')
+                                <span class="text-danger" style="color: #dc2626; font-size: 13px; margin-top: 5px; display: block;">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="auth-form-group">
                         <label class="auth-label">Địa chỉ Email</label>
                         <div class="auth-input-wrapper">
-                            <input type="email" name="email" class="auth-input" placeholder="Nhập địa chỉ email" required>
+                            <input type="email" name="email" class="auth-input @error('email') is-invalid @enderror" placeholder="Nhập địa chỉ email" required value="{{ old('email') }}">
+                            @error('email')
+                                <span class="text-danger" style="color: #dc2626; font-size: 13px; margin-top: 5px; display: block;">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="auth-form-group">
                         <label class="auth-label">Mật khẩu</label>
                         <div class="auth-input-wrapper">
-                            <input type="password" name="password" class="auth-input" placeholder="Tạo mật khẩu" required id="password-field">
+                            <input type="password" name="password" class="auth-input @error('password') is-invalid @enderror" placeholder="Tạo mật khẩu" required id="password-field">
                             <i class="fa-solid fa-eye-slash auth-toggle-pass" onclick="togglePassword('password-field', this)"></i>
                         </div>
+                        @error('password')
+                            <span class="text-danger" style="color: #dc2626; font-size: 13px; margin-top: 5px; display: block;">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="auth-form-group">
                         <label class="auth-label">Xác nhận mật khẩu</label>
                         <div class="auth-input-wrapper">
-                            <input type="password" name="password_confirmation" class="auth-input" placeholder="Nhập lại mật khẩu" required id="password-confirm">
+                            <input type="password" name="password_confirmation" class="auth-input @error('password_confirmation') is-invalid @enderror" placeholder="Nhập lại mật khẩu" required id="password-confirm">
                             <i class="fa-solid fa-eye-slash auth-toggle-pass" onclick="togglePassword('password-confirm', this)"></i>
                         </div>
+                        @error('password_confirmation')
+                            <span class="text-danger" style="color: #dc2626; font-size: 13px; margin-top: 5px; display: block;">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <button type="submit" class="auth-btn">Đăng ký ngay</button>
 
                     <div class="auth-footer">
-                        Đã có tài khoản? <a href="{{ route('auth.login') }}" class="auth-link">Đăng nhập tại đây</a>
+                        Đã có tài khoản? <a href="{{ route('login') }}" class="auth-link">Đăng nhập tại đây</a>
                     </div>
                 </form>
             </div>
@@ -90,5 +105,25 @@
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: "{{ session('error') }}",
+            });
+        @endif
+    </script>
 </body>
 </html>
