@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
+
 
 // Guest routes (accessible only when NOT logged in)
 Route::middleware(['guest'])->group(function () {
@@ -18,4 +21,11 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    
+    // Payment Routes
+    Route::get('/topup', [PaymentController::class, 'showTopUpForm'])->name('payment.topup');
+    Route::post('/payment/initiate', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
 });
+
+// SePay Callback (Webhook) 
+Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
