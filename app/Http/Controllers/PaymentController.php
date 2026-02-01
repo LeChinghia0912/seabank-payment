@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\SePayService;
+use App\Events\PaymentCompleted;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -101,6 +102,9 @@ class PaymentController extends Controller
             if ($user) {
                 $user->balance += $order->amount;
                 $user->save();
+
+                event(new PaymentCompleted($order, $user));
+                Log::info('Payment completed event broadcasted for Order ID: ' . $order->id);
             }
         }
 
